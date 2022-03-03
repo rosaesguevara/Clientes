@@ -1,0 +1,33 @@
+.navbar-brand img{
+	animation-duration: 1s;
+	animation-name: zoomIn;
+	animation-direction: alternate;
+}
+.img-opacity{
+	animation-duration: 0.5s;
+	animation-name:opacityIn; 
+	opacity: .7;
+
+}
+.slideInDown{
+	opacity: .7;
+	animation: slideInDown;
+	animation-duration: 3s;
+	
+}
+@keyframes zoomIn{
+	from{
+		width: 0px;
+	}
+	to{
+		width: 64px;
+	}
+}
+@keyframes opacityIn{
+	from{
+		opacity:1 ;
+	}
+	to{
+		opacity: .7;
+	} 
+} 
