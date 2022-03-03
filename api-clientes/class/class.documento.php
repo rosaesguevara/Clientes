@@ -1,6 +1,6 @@
 <?php 
 
-class cliente{
+class documento{
 
 	function __construct() {
 		// implementation
@@ -14,33 +14,19 @@ class cliente{
 			$response["status"] = true;
 	    	try {
 	    		if (empty($params)) {
-			    	$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>") as documentos,
-                                    GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>") as direcciones 
-                                FROM cliente AS c 
-                                LEFT JOIN documento as d ON c.idCliente=d.idCliente
-                                LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
-                                LEFT JOIN direccion as dir ON c.idCliente=dir.idCliente
-                                LEFT JOIN municipio as m ON dir.idMunicipio=m.idMunicipio
-                                LEFT JOIN departamento as dep ON m.idDepartamento=dep.idDepartamento
-                                GROUP BY c.idCliente
-                                ORDER BY c.nombres ASC';
+			    	$sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
+                                FROM documento AS d
+                                INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
+                                ORDER BY d.numeroDocumento ASC';
 				    $query = $connect->prepare($sql);
 	    		} else {
-	    			$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>") as documentos,
-                                    GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>") as direcciones 
-                                FROM cliente AS c 
-                                LEFT JOIN documento as d ON c.idCliente=d.idCliente
-                                LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
-                                LEFT JOIN direccion as dir ON c.idCliente=dir.idCliente
-                                LEFT JOIN municipio as m ON dir.idMunicipio=m.idMunicipio
-                                LEFT JOIN departamento as dep ON m.idDepartamento=dep.idDepartamento
-                                WHERE c.idCliente=:idCliente
-                                GROUP BY c.idCliente
-                                ORDER BY c.nombres ASC';
+	    			$sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
+                                FROM documento AS d
+                                INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
+                                WHERE d.idDocumento=:idDocumento
+                                ORDER BY d.numeroDocumento ASC';
 				    $query = $connect->prepare($sql);
-	    			$query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+	    			$query->bindParam(":idDocumento", $params["idDocumento"], PDO::PARAM_INT);
 	    		}
                 if ($query->execute()){
                     $response["object"] = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -69,25 +55,25 @@ class cliente{
                 $response["status"] = true;
                 try {
                     $connect->beginTransaction();
-                    if((isset($params["idCliente"])) && ($params["idCliente"]!="")) { 
-                        $sql = "UPDATE cliente SET nombres=:nombres, apellidos=:apellidos WHERE idCliente=:idCliente";
+                    if((isset($params["idDocumento"])) && ($params["idDocumento"]!="")) { 
+                        $sql = "UPDATE documento SET numeroDocumento=:numeroDocumento WHERE idDocumento=:idDocumento";
                         $query = $connect->prepare($sql);
-                        $query->bindParam(":nombres", $params["nombres"], PDO::PARAM_STR);
-                        $query->bindParam(":apellidos", $params["apellidos"], PDO::PARAM_STR);
-                        $query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+                        $query->bindParam(":numeroDocumento", $params["numeroDocumento"], PDO::PARAM_STR);
+                        $query->bindParam(":idDocumento", $params["idDocumento"], PDO::PARAM_INT);
                     } else {
-                        $sql = "INSERT INTO cliente (nombres, apellidos) VALUES (:nombres, :apellidos)";
+                        $sql = "INSERT INTO documento (numeroDocumento, idCliente, idTipoDocumento) VALUES (:numeroDocumento, :idCliente, :idTipoDocumento)";
                         $query = $connect->prepare($sql);
-                        $query->bindParam(":nombres", $params["nombres"], PDO::PARAM_STR);
-                        $query->bindParam(":apellidos", $params["apellidos"], PDO::PARAM_STR);
+                        $query->bindParam(":numeroDocumento", $params["numeroDocumento"], PDO::PARAM_STR);
+                        $query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+                        $query->bindParam(":idTipoDocumento", $params["idTipoDocumento"], PDO::PARAM_INT);
                     }
                     if ($query->execute()){
-                        $idCliente=intval($connect->lastInsertId());
-                        if((isset($params["idCliente"])) && ($params["idCliente"]!="")) { 
-                            $response["insertId"] = $params['idCliente'];
+                        $idDocumento=intval($connect->lastInsertId());
+                        if((isset($params["idDocumento"])) && ($params["idDocumento"]!="")) { 
+                            $response["insertId"] = $params['idDocumento'];
                             $this->audit(3, $params);
                         } else {
-                            $response["insertId"] = $idCliente;
+                            $response["insertId"] = $idDocumento;
                             $this->audit(2, $params);
                         }
                         $response["total"] = $query->rowCount();
@@ -119,9 +105,9 @@ class cliente{
                 $response["status"] = true;
                 try {
                     $connect->beginTransaction();
-                    $sql = "DELETE FROM cliente WHERE idCliente=:idCliente";
+                    $sql = "DELETE FROM documento WHERE idDocumento=:idDocumento";
                     $query = $connect->prepare($sql);
-                    $query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+                    $query->bindParam(":idDocumento", $params["idDocumento"], PDO::PARAM_INT);
                     if ($query->execute()){
                         $response["total"] = $query->rowCount();
                         $this->audit(4, $params);
@@ -153,22 +139,22 @@ class cliente{
                 switch ($type) {
                     case '1':
                     # SELECT
-                        $params["accion"] = 'Se consultaron los registros de la tabla cliente';
+                        $params["accion"] = 'Se consultaron los registros de la tabla documento';
                     break;
                     case '2':
                     # INSERT
                         $params["datos"] = $connection->array_to_string($params);
-                        $params["accion"] = 'Se inserto un registro en la tabla cliente: '.$params["datos"];
+                        $params["accion"] = 'Se inserto un registro en la tabla documento: '.$params["datos"];
                     break;
                     case '3':
                     # UPDATE
                         $params["datos"] = $connection->array_to_string($params);
-                        $params["accion"] = 'Se modifico un registro de la tabla cliente: '.$params["datos"];
+                        $params["accion"] = 'Se modifico un registro de la tabla documento: '.$params["datos"];
                     break;
                     case '4':
                     # DELETE
                         $params["datos"] = $connection->array_to_string($params);
-                        $params["accion"] = 'Se elimino un registro de la tabla cliente: '.$params["datos"];
+                        $params["accion"] = 'Se elimino un registro de la tabla documento: '.$params["datos"];
                     break;
                     default:
                         $params["accion"]='';
@@ -191,4 +177,5 @@ class cliente{
         return $response;
     }
 }
+
 ?>
