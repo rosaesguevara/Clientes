@@ -1,0 +1,15 @@
+
+INSERT INTO cliente (nombres,apellidos) VALUES ('Juan Antonio','Perez Melgar');
+INSERT INTO cliente (nombres,apellidos) VALUES ('Andrea Sofia','Guzman Andrade');
+INSERT INTO cliente (nombres,apellidos) VALUES ('Rosa María','Alfaro Amaya');
+INSERT INTO cliente (nombres,apellidos) VALUES ('Pedro Antonio','Coral Tavera');
+
+INSERT INTO documento (numeroDocumento,idCliente,idTipoDocumento)VALUES('1234567',1,2);
+INSERT INTO documento (numeroDocumento,idCliente,idTipoDocumento)VALUES('12345678-9',1,1);
+
+INSERT INTO direccion (direccion,idCliente,idMunicipio)VALUES('Colonia las Margaritas, pasaje 6, block g, #62',1,1);
+INSERT INTO direccion (direccion,idCliente,idMunicipio)VALUES('Colonia, el milagro, Barrio el calvario,  #20',2,40);
+INSERT INTO direccion (direccion,idCliente,idMunicipio)VALUES('Colonia la cima 2, calle los girasoles, #15',1,1);
+
+UPDATE cliente SET nombres='Rosa Esperanza', apellidos='Alfaro Amaya'  WHERE idCliente=3;
+

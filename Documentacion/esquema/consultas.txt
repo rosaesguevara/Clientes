@@ -1,0 +1,18 @@
+
+
+
+
+Insertar cliente
+INSERT INTO cliente (nombres,apellidos) 
+VALUES (:nombre,:apellidos);
+
+
+Insertar documento
+INSERT INTO documento (numeroDocumento,idCliente,idTipoDocumento)VALUES(:numeroDocumento,:idCliente,:idTipoDocumento);
+
+Insertar direccion
+INSERT INTO direccion (direccion,idCliente,idMunicipio)VALUES(:direccion,:idCliente,:idMunicipio);
+
+Actualizar cliente
+UPDATE cliente SET nombres=:nombres, apellidos=:apellidos WHERE idCliente=3;
+
