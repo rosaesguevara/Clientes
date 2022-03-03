@@ -21,7 +21,6 @@
         <tbody>
             <tr>
                 <td>
-                
                     <a href="http://127.0.0.1/api-clientes/api/municipio/list.php" target="_blank">
                         http://127.0.0.1/api-clientes/api/municipio/list.php
                     </a>
@@ -38,7 +37,41 @@
                 <td>Lista los tipos de documentos</td>
                 <td></td>
             </tr>
+            <tr>
+                <td>
+                    <a href="http://127.0.0.1/api-clientes/api/cliente/list.php" target="_blank">
+                        http://127.0.0.1/api-clientes/api/tipoDocumento/list.php
+                    </a>
+                    <br/>
+                    <a href="http://127.0.0.1/api-clientes/api/cliente/list.php?idCliente=1" target="_blank">
+                        http://127.0.0.1/api-clientes/api/tipoDocumento/list.php?idCliente=1
+                    </a>
+                </td>
+                <td>Lista/obtiene cliente</td>
+                <td>idCliente (para obtener un registro en especifico)</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="javascript:void(0)">
+                        http://127.0.0.1/api-clientes/api/tipoDocumento/save.php
+                    </a>
+                </td>
+                <td>Ingresa/actualiza cliente</td>
+                <td>nombres, apellidos, idCliente (para modificar)</td>
+            </tr>
         </tbody>
     </table>
+    <style type="text/css">
+        table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid black;
+        }
+    </style>
 </body>
 </html>
