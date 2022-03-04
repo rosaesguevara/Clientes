@@ -10,66 +10,72 @@ $(document).ready(function() {
 	});
 
 	$("#guardarCliente").click(function(){
-		$.ajax({
-		    url: base_uri+'cliente/save.php',
-		    type: 'POST',
-		    dataType: 'Json',
-		    data: $('#frmCliente').serialize()
-		}).done(function(response){
-		    if(response.status=="success"){
-		    	alert('El cliente se ingreso con exito');
-				$("#frmCliente input[name=idCliente]").val('');
-	    		$("#frmCliente input[name=nombres]").val('');
-	    		$("#frmCliente input[name=apellidos]").val('');
-			    listarCliente();
-		    }else{
-		        alert(response.error);
-		    }
-		}).fail(function(){
-		    alert('Ocurrió un error al realizar la petición');
-		});
+		if ($("#frmCliente input[name=nombres]").val()!="" && $("#frmCliente input[name=apellidos]").val()!="") {
+			$.ajax({
+				url: base_uri+'cliente/save.php',
+				type: 'POST',
+				dataType: 'Json',
+				data: $('#frmCliente').serialize()
+			}).done(function(response){
+				if(response.status=="success"){
+					alert('El cliente se ingreso con exito');
+					$("#frmCliente input[name=idCliente]").val('');
+					$("#frmCliente input[name=nombres]").val('');
+					$("#frmCliente input[name=apellidos]").val('');
+					listarCliente();
+				}else{
+					alert(response.error);
+				}
+			}).fail(function(){
+				alert('Ocurrió un error al realizar la petición');
+			});
+		}
 	});
 
 	$("#guardarDocumento").click(function(){
-		$.ajax({
-		    url: base_uri+'documento/save.php',
-		    type: 'POST',
-		    dataType: 'Json',
-		    data: $('#frmDocumento').serialize()
-		}).done(function(response){
-		    if(response.status=="success"){
-		    	alert('El documento se ingreso con exito');
-				$("#frmDocumento input[name=idDocumento]").val('');
-	    		$("#frmDocumento input[name=numeroDocumento]").val('');
-	    		listarTipoDocumento();
-			    listarDocumento($("#frmDocumento input[name=idCliente]").val());
-		    }else{
-		        alert(response.error);
-		    }
-		}).fail(function(){
-		    alert('Ocurrió un error al realizar la petición');
-		});
+		if($("#frmDocumento input[name=numeroDocumento]").val()!="" && $("#frmDocumento select[name=idTipoDocumento]").val()!=""){
+			$.ajax({
+				url: base_uri+'documento/save.php',
+				type: 'POST',
+				dataType: 'Json',
+				data: $('#frmDocumento').serialize()
+			}).done(function(response){
+				if(response.status=="success"){
+					alert('El documento se ingreso con exito');
+					$("#frmDocumento input[name=idDocumento]").val('');
+					$("#frmDocumento input[name=numeroDocumento]").val('');
+					listarTipoDocumento();
+					listarDocumento($("#frmDocumento input[name=idCliente]").val());
+				}else{
+					alert(response.error);
+				}
+			}).fail(function(){
+				alert('Ocurrió un error al realizar la petición');
+			});
+		}
 	});
 
 	$("#guardarDireccion").click(function(){
-		$.ajax({
-		    url: base_uri+'direccion/save.php',
-		    type: 'POST',
-		    dataType: 'Json',
-		    data: $('#frmDireccion').serialize()
-		}).done(function(response){
-		    if(response.status=="success"){
-		    	alert('El cliente se ingreso con exito');
-				$("#frmDireccion input[name=idDireccion]").val('');
-	    		$("#frmDireccion input[name=direccion]").val('');
-	    		listarMunicipio();
-				listarDireccion($("#frmDireccion input[name=idCliente]").val());
-		    }else{
-		        alert(response.error);
-		    }
-		}).fail(function(){
-		    alert('Ocurrió un error al realizar la petición');
-		});
+		if($("#frmDireccion input[name=direccion]").val()!="" && $("#frmDireccion select[name=idMunicipio]").val()!=""){
+			$.ajax({
+				url: base_uri+'direccion/save.php',
+				type: 'POST',
+				dataType: 'Json',
+				data: $('#frmDireccion').serialize()
+			}).done(function(response){
+				if(response.status=="success"){
+					alert('El cliente se ingreso con exito');
+					$("#frmDireccion input[name=idDireccion]").val('');
+					$("#frmDireccion input[name=direccion]").val('');
+					listarMunicipio();
+					listarDireccion($("#frmDireccion input[name=idCliente]").val());
+				}else{
+					alert(response.error);
+				}
+			}).fail(function(){
+				alert('Ocurrió un error al realizar la petición');
+			});
+		}
 	});
 });
 
