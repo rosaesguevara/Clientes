@@ -149,6 +149,7 @@ class cliente{
         $connection = new connection();
         $connect = $connection->connect(); 
         if ($connect!=null) {
+            $response["status"] = "success";
             try {
                 switch ($type) {
                     case '1':

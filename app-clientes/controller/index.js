@@ -37,9 +37,29 @@ $(document).ready(function() {
 		    	alert('El documento se ingreso con exito');
 				$("#frmDocumento input[name=idDocumento]").val('');
 	    		$("#frmDocumento input[name=numeroDocumento]").val('');
-	    		$("#frmDocumento input[name=idCliente]").val('');
 	    		listarTipoDocumento();
-			    listarDocumento();
+			    listarDocumento($("#frmDocumento input[name=idCliente]").val());
+		    }else{
+		        alert(response.error);
+		    }
+		}).fail(function(){
+		    alert('Ocurrió un error al realizar la petición');
+		});
+	});
+
+	$("#guardarDireccion").click(function(){
+		$.ajax({
+		    url: base_uri+'direccion/save.php',
+		    type: 'POST',
+		    dataType: 'Json',
+		    data: $('#frmDireccion').serialize()
+		}).done(function(response){
+		    if(response.status=="success"){
+		    	alert('El cliente se ingreso con exito');
+				$("#frmDireccion input[name=idDireccion]").val('');
+	    		$("#frmDireccion input[name=direccion]").val('');
+	    		listarMunicipio();
+				listarDireccion($("#frmDireccion input[name=idCliente]").val());
 		    }else{
 		        alert(response.error);
 		    }
@@ -324,6 +344,8 @@ function obtenerDireccion(idDireccion){
 }
 
 function obtenerDetalle(idCliente){
+	$("#frmDocumento input[name=idCliente]").val(idCliente);
+	$("#frmDireccion input[name=idCliente]").val(idCliente);
 	listarDocumento(idCliente);
 	listarDireccion(idCliente);
 	$('#myModal').modal('show');

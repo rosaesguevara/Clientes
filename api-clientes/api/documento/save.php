@@ -30,7 +30,7 @@
             }
         }
     } else {
-        $response = array("status"=>"error", "error" => "No se pudo ingresar el documento. Los datos están incompletos");
+        $response = array("status"=>"error", "error" => "No se pudo ingresar el direccion. Los datos están incompletos");
     }
 
     echo json_encode($params);
