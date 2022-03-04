@@ -11,12 +11,12 @@ class cliente{
     	$connection = new connection();
     	$connect = $connection->connect(); 
     	if ($connect!=null) {
-			$response["status"] = true;
+			$response["status"] = "success";
 	    	try {
 	    		if (empty($params)) {
 			    	$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>") as documentos,
-                                    GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>") as direcciones 
+                                    IFNULL(GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
+                                    IFNULL(GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
                                 FROM cliente AS c 
                                 LEFT JOIN documento as d ON c.idCliente=d.idCliente
                                 LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
@@ -28,8 +28,8 @@ class cliente{
 				    $query = $connect->prepare($sql);
 	    		} else {
 	    			$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>") as documentos,
-                                    GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>") as direcciones 
+                                    IFNULL(GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
+                                    IFNULL(GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
                                 FROM cliente AS c 
                                 LEFT JOIN documento as d ON c.idCliente=d.idCliente
                                 LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
@@ -66,7 +66,7 @@ class cliente{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     if((isset($params["idCliente"])) && ($params["idCliente"]!="")) { 
@@ -116,7 +116,7 @@ class cliente{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     $sql = "DELETE FROM cliente WHERE idCliente=:idCliente";

@@ -11,7 +11,7 @@ class documento{
     	$connection = new connection();
     	$connect = $connection->connect(); 
     	if ($connect!=null) {
-			$response["status"] = true;
+			$response["status"] = "success";
 	    	try {
 	    		if (empty($params)) {
 			    	$sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
@@ -52,7 +52,7 @@ class documento{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     if((isset($params["idDocumento"])) && ($params["idDocumento"]!="")) { 
@@ -102,7 +102,7 @@ class documento{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     $sql = "DELETE FROM documento WHERE idDocumento=:idDocumento";

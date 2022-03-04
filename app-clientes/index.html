@@ -1,103 +1,211 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Sistema Clientes">
-    <meta name="author" content="Rosa Guevara">
-    <title>Sistema Clientes</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sistema Clientes">
+  <meta name="author" content="Rosa Guevara">
+  <title>Sistema Clientes</title>
+  <script src="js/jquery-3.2.1.slim.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="controller/index.js"></script>
+</head>
 
-    <!-- Animaciones de animate CSS -->
-    <link href="css/animate.min.css" rel="stylesheet">
-   
-    
-    <!-- Custom styles for this template -->
-    <link href="css/carousel.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-     <link href="css/style.css" rel="stylesheet">
-    <link href="css/animation.css" rel="stylesheet">
-  </head>
-  <body>
-    
-<header>
-
-
-
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse float-left" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+<body>
+  <header class="mb-2">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link " aria-current="page" href="index.html"><i class="fa fa-users"></i> Administraci&oacute;n de Clientes</a>
+            <a class="nav-link" href="index.html">Registro Clientes <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " href="pages/auditoria.html"><i class="fa fa-file-text"></i> Auditoria </a>
+            <a class="nav-link" href="#">Auditoria <span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
+    </nav>
+  </header>
+  <main>
+    <div class="p-4">
+      <h2 class="featurette-heading mt-0">Registro de Clientes</h2>
+      <div class="mt-4 mb-4">
+        <form id="frmCliente">
+          <div class="row">
+            <div class="col-md-5 mb-4">
+              <input type="text" class="input-bottom " id="nombres" name="nombres" placeholder="Ingrese Nombres">
+            </div>
+            <div class="col-md-5 mb-4">
+              <input type="text" class="input-bottom" id="apellidos" name="apellidos" placeholder="Ingrese Apellidos">
+            </div>
+            <div class="col-md-2"><button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#myModal">Aceptar</button></div>
+          </div>
+        </form>
+      </div>
+      <table class="table table-striped table-holder">
+        <thead>
+          <th>No</th>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Direcci&oacute;n</th>
+          <th>Acci&oacute;n</th>
+        </thead>
+        <tbody id="tbodyCliente">
+          <tr>
+            <td>1</td>
+            <td>Rosa Esperanza Guevara Lara</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>H&eacute;ctor Vladimir Guzm&aacute;n Viana</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
-  </nav>
-</header>
 
-<main>
+    <!-- Button to Open the Modal -->
 
-   <!-- START THE FEATURETTES -->
 
- 
-      <div class="p-4">
-        <h2 class="featurette-heading">Registro de Clientes
-          </h2>
-          <div class="mt-4 mb-4">
-            <div class="row">
-              <div class="col-md-5 mb-4" >
-                <input type="text" class="input-bottom " id="txtName" placeholder="Ingrese el Nombres"> </div>
-              <div class="col-md-5 mb-4">
-                <input type="text" class="input-bottom" id="txtCorreo" placeholder="Ingrese el Apellidos"> 
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Datos Personales</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <h5>Documentos</h5>
+            <form id="frmDocumento" name="frmDocumento">
+              <div class="row">
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect01">Tipo</label>
+                    </div>
+                    <select class="custom-select" id="idTipoDocumento" name="idTipoDocumento">
+                      <option selected>Elige tipo...</option>
+                      <option value="1">DUI</option>
+                      <option value="2">Pasaporte</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon1">Numero</span>
+                    </div>
+                    <input type="text" class="form-control" id="numeroDocumento" name="numeroDocumento"
+                      placeholder="05361784-6" aria-label="Username" aria-describedby="basic-addon1">
+                  </div>
+                </div>
               </div>
-              <div class="col-md-2"><button type="button" class="btn btn-primary">Aceptar</button></div>
+              <div class="row mt-1 mb-3 ml-1 align-item-right">
+                <button type="button" class="btn btn-primary btnguardarDocumento" id="idguardarDocumento">
+                  Guardar Direcci&oacute;n
+                </button>
+              </div>
+            </form>
+          
+          <table class="table table-striped table-holder">
+            <thead>
+              <th>No</th>
+              <th>Tipo</th>
+              <th>Documento</th>
+              <th>Acci&oacute;n</th>
+            </thead>
+            <tbody id="tbodyDocumento">
+              <tr>
+                <td>1</td>
+                <td>DUI</td>
+                <td>8756341-2</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Pasaporte</td>
+                <td>6945321</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <h5>Direccion</h5>
+          <form id="frmDireccion">
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">direccion</span>
+                </div>
+                <input type="text" class="form-control" id="direccion" name="direccion"
+                  placeholder="05361784-6" aria-label="Username" aria-describedby="basic-addon1">
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Municipio</label>
+                </div>
+                <select class="custom-select" id="idMunicipio" name="idMunicipio">
+                  <option selected>Elige municipio...</option>
+                </select>
+              </div>
             </div>
           </div>
-        <p class="lead">Aunque la lista son injusta para todos los gustos, aqui te dejemos los platos mas populares entre nuestros clientes</p>
-        <table class="table table-striped table-holder">
-          <caption>Más detalle en nuestra carta</caption>
-          <thead>
-            <th>No</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Acci&oacute;n</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Rosa Esperanza</td>
-              <td>Guevara G&oacute;nzalez</td>
-              <td></td>
-            </tr>
+          <div class="row mt-1 mb-3 ml-1 align-item-right">
+            <button type="button" class="btn btn-primary btnguardarDireccion" id="idguardarDireccion">
+              Guardar Documento
+            </button>
+          </div>
+         </form>
+          <table class="table table-striped table-holder">
+            <thead>
+              <th>No</th>
+              <th>Direccion</th>
+              <th>Municipio</th>
+              <th>Acci&oacute;n</th>
+            </thead>
+            <tbody id="tbodyDireccion">
               <tr>
-              <td>1</td>
-              <td>H&eacute;ctor Vladimir</td>
-              <td>Guzm&aacute;n Viana</td>
-              <td></td>
-            </tr>
-          </tbody>
-        </table>
+                <td>1</td>
+                <td>Colonia miralvalle, pasaje rotterdam, #15</td>
+                <td>San Salvador, San Salvador</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+
       </div>
-    
-    
-
- 
-
-  </div><!-- /.container -->
+    </div>
+    </div>
 
 
- 
-</main>
 
-    <script src="js/bootstrap.min.js"></script>
+  </main>
 
-   
-  </body>
+
+
+</body>
+
 </html>

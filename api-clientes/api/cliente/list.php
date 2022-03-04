@@ -20,10 +20,12 @@
 	}
 
 	if (!empty($response)) {
-		if ($response["status"]=="success") {
+		if ($response["status"] == "success") {
 			if ($response["total"] == 0) {
-				$response = array("status"=>"error", "error" => "Cliente no disponible");
+				$response["object"] = array();
 			}
+		} else { 
+			$response = array("status"=>"error", "error" => "Cliente no disponible");
 		}
 	}
 	

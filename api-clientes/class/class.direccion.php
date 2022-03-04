@@ -11,7 +11,7 @@ class direccion{
         $connection = new connection();
         $connect = $connection->connect(); 
         if ($connect!=null) {
-            $response["status"] = true;
+            $response["status"] = "success";
             try {
                 if (empty($params)) {
                     $sql = 'SELECT d.idDireccion, d.direccion, m.idMunicipio, m.municipio, dep.departamento
@@ -54,7 +54,7 @@ class direccion{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     if((isset($params["idDireccion"])) && ($params["idDireccion"]!="")) { 
@@ -104,7 +104,7 @@ class direccion{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = true;
+                $response["status"] = "success";
                 try {
                     $connect->beginTransaction();
                     $sql = "DELETE FROM direccion WHERE idDireccion=:idDireccion";
