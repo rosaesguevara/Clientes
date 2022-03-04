@@ -5,6 +5,10 @@ $(document).ready(function() {
 	listarTipoDocumento();
 	listarCliente();
 
+	$('#myModal').on('hidden.bs.modal', function (e) {
+		listarCliente();
+	});
+
 	$("#guardarCliente").click(function(){
 		$.ajax({
 		    url: base_uri+'cliente/save.php',

@@ -15,8 +15,8 @@ class cliente{
 	    	try {
 	    		if (empty($params)) {
 			    	$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    IFNULL(GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
-                                    IFNULL(GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
+                                    IFNULL(GROUP_CONCAT(DISTINCT CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
+                                    IFNULL(GROUP_CONCAT(DISTINCT CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
                                 FROM cliente AS c 
                                 LEFT JOIN documento as d ON c.idCliente=d.idCliente
                                 LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
@@ -28,8 +28,8 @@ class cliente{
 				    $query = $connect->prepare($sql);
 	    		} else {
 	    			$sql = 'SELECT DISTINCT c.idCliente, c.nombres, c.apellidos, 
-                                    IFNULL(GROUP_CONCAT(CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
-                                    IFNULL(GROUP_CONCAT(CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
+                                    IFNULL(GROUP_CONCAT(DISTINCT CONCAT(td.tipoDocumento, ": ", d.numeroDocumento) SEPARATOR "<br>"), "") as documentos,
+                                    IFNULL(GROUP_CONCAT(DISTINCT CONCAT(dir.direccion, ", ", m.municipio, ", ", dep.departamento)SEPARATOR "<br>"), "") as direcciones 
                                 FROM cliente AS c 
                                 LEFT JOIN documento as d ON c.idCliente=d.idCliente
                                 LEFT JOIN tipodocumento as td ON d.idTipoDocumento=td.idTipoDocumento
