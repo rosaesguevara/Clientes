@@ -7,10 +7,8 @@
     <title>AppClientes</title>
 </head>
 <body>
-    <?php 
-        echo "<center><h3>Bienvenido a la API de consumo para clientes</h3></center>";
-    ?>
-    <table border="1" width="100%">
+    <center><h2>Documentacion de API de clientes</h2></center>
+    <table>
         <thead>
             <tr>
                 <th>Url</th>
@@ -21,6 +19,7 @@
         <tbody>
             <tr>
                 <td>
+                
                     <a href="http://127.0.0.1/api-clientes/api/municipio/list.php" target="_blank">
                         http://127.0.0.1/api-clientes/api/municipio/list.php
                     </a>

@@ -13,10 +13,10 @@
 	$params = $_GET;
 	$response = array();
 
-	if (isset($params['idDireccion'])) {
-		$response = $direccion->list($params);
-	} else {
+	if (empty($params)) {
 		$response = $direccion->list();
+	} else {
+		$response = $direccion->list($params);
 	}
 
 	if (!empty($response)) {

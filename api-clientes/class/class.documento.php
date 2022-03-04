@@ -13,21 +13,29 @@ class documento{
     	if ($connect!=null) {
 			$response["status"] = "success";
 	    	try {
-	    		if (empty($params)) {
+                if (isset($params['idCliente'])) {
+                    $sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
+                                FROM documento AS d
+                                INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
+                                WHERE d.idCliente=:idCliente
+                                ORDER BY d.numeroDocumento ASC';
+                    $query = $connect->prepare($sql);
+                    $query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+                } elseif (isset($params['idDocumento'])) {
+                    $sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
+                                FROM documento AS d
+                                INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
+                                WHERE d.idDocumento=:idDocumento
+                                ORDER BY d.numeroDocumento ASC';
+                    $query = $connect->prepare($sql);
+                    $query->bindParam(":idDocumento", $params["idDocumento"], PDO::PARAM_INT);
+                } else {
 			    	$sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
                                 FROM documento AS d
                                 INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
                                 ORDER BY d.numeroDocumento ASC';
 				    $query = $connect->prepare($sql);
-	    		} else {
-	    			$sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
-                                FROM documento AS d
-                                INNER JOIN tipodocumento AS td ON d.idTipoDocumento=td.idTipoDocumento
-                                WHERE d.idDocumento=:idDocumento
-                                ORDER BY d.numeroDocumento ASC';
-				    $query = $connect->prepare($sql);
-	    			$query->bindParam(":idDocumento", $params["idDocumento"], PDO::PARAM_INT);
-	    		}
+                }
                 if ($query->execute()){
                     $response["object"] = $query->fetchAll(PDO::FETCH_ASSOC);
                     $response["total"] = $query->rowCount();

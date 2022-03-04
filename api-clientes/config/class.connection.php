@@ -23,6 +23,14 @@ class connection {
     public function disconnect() {
       	$this->connect = null;
    	}
+
+    public function array_to_string($params=array()){
+        $cadena = '';
+        foreach ($params as $key => $value) {
+            $cadena.=$key. ":". $value. ", ";
+        }
+        return $cadena;
+    }
 }  
 
 ?>

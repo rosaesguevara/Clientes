@@ -13,10 +13,10 @@
 	$params = $_GET;
 	$response = array();
 
-	if (isset($params['idDocumento'])) {
-		$response = $documento->list($params);
-	} else {
+	if (empty($params)) {
 		$response = $documento->list();
+	} else {
+		$response = $documento->list($params);
 	}
 
 	if (!empty($response)) {

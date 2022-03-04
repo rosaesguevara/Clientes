@@ -13,22 +13,31 @@ class direccion{
         if ($connect!=null) {
             $response["status"] = "success";
             try {
-                if (empty($params)) {
+                if (isset($params['idCliente'])) {
                     $sql = 'SELECT d.idDireccion, d.direccion, m.idMunicipio, m.municipio, dep.departamento
-                                FROM direccion AS d
-                                INNER JOIN municipio AS m ON d.idMunicipio=m.idMunicipio
-                                INNER JOIN departamento AS dep ON m.idDepartamento=dep.idDepartamento
-                                ORDER BY d.direccion ASC';
+                            FROM direccion AS d
+                            INNER JOIN municipio AS m ON d.idMunicipio=m.idMunicipio
+                            INNER JOIN departamento AS dep ON m.idDepartamento=dep.idDepartamento
+                            WHERE d.idCliente=:idCliente
+                            ORDER BY d.direccion ASC';
                     $query = $connect->prepare($sql);
+                    $query->bindParam(":idCliente", $params["idCliente"], PDO::PARAM_INT);
+                } elseif (isset($params['idDireccion'])) {
+                    $sql = 'SELECT d.idDireccion, d.direccion, m.idMunicipio, m.municipio, dep.departamento
+                            FROM direccion AS d
+                            INNER JOIN municipio AS m ON d.idMunicipio=m.idMunicipio
+                            INNER JOIN departamento AS dep ON m.idDepartamento=dep.idDepartamento
+                            WHERE d.idDireccion=:idDireccion
+                            ORDER BY d.direccion ASC';
+                    $query = $connect->prepare($sql);
+                    $query->bindParam(":idDireccion", $params["idDireccion"], PDO::PARAM_INT);
                 } else {
                     $sql = 'SELECT d.idDireccion, d.direccion, m.idMunicipio, m.municipio, dep.departamento
                                 FROM direccion AS d
                                 INNER JOIN municipio AS m ON d.idMunicipio=m.idMunicipio
                                 INNER JOIN departamento AS dep ON m.idDepartamento=dep.idDepartamento
-                                WHERE d.idDireccion=:idDireccion
                                 ORDER BY d.direccion ASC';
                     $query = $connect->prepare($sql);
-                    $query->bindParam(":idDireccion", $params["idDireccion"], PDO::PARAM_INT);
                 }
                 if ($query->execute()){
                     $response["object"] = $query->fetchAll(PDO::FETCH_ASSOC);
