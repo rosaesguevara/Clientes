@@ -11,7 +11,7 @@ class documento{
     	$connection = new connection();
     	$connect = $connection->connect(); 
     	if ($connect!=null) {
-			$response["status"] = "success";
+			$response["status"] = true;
 	    	try {
                 if (isset($params['idCliente'])) {
                     $sql = 'SELECT d.idDocumento, d.numeroDocumento, d.idCliente, td.idTipoDocumento, td.tipodocumento
@@ -41,15 +41,24 @@ class documento{
                     $response["total"] = $query->rowCount();
                     $this->audit(1, $params);
                 } else {
-                    $response = array("status"=>"error", "error"=>"No se pudo ejecutar la consulta a la base de datos");
+                    $response = array(
+                        "status"=>false, 
+                        "msg"=>"No se pudo ejecutar la consulta a la base de datos"
+                    );
                 }
 			} catch(PDOException $exception) {
-		    	$response = array("status"=>false, "error"=>"Ocurrió el siguiente error: " . $exception->getMessage());
+		    	$response = array(
+                    "status"=>false, 
+                    "msg"=>"Ocurrió el siguiente error: " . $exception->getMessage()
+                );
             } finally {
                 $connection->disconnect();
             }
 	    } else {
-	    	$response = array("status"=>false, "error"=>"No está conectado al servidor de bases de datos");
+	    	$response = array(
+                "status"=>false, 
+                "msg"=>"No está conectado al servidor de bases de datos"
+            );
 	    } 
 	    return $response;
     }
@@ -60,7 +69,7 @@ class documento{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = "success";
+                $response["status"] = true;
                 try {
                     $connect->beginTransaction();
                     if((isset($params["idDocumento"])) && ($params["idDocumento"]!="")) { 
@@ -81,25 +90,38 @@ class documento{
                             $response["insertId"] = $params['idDocumento'];
                             $this->audit(3, $params);
                         } else {
+                            $params["idDocumento"] = $idDocumento;
                             $response["insertId"] = $idDocumento;
                             $this->audit(2, $params);
                         }
                         $response["total"] = $query->rowCount();
                     } else {
-                        $response = array("status"=>"error", "error"=>"No se pudo ejecutar la consulta a la base de datos");
+                        $response = array(
+                            "status"=>false, 
+                            "msg"=>"No se pudo ejecutar la consulta a la base de datos"
+                        );
                     }
                     $connect->commit();
                 } catch(PDOException $exception) {
                     $connect->rollback();
-                    $response = array("status"=>false, "error"=>"Ocurrió el siguiente error: " . $exception->getMessage());
+                    $response = array(
+                        "status"=>false, 
+                        "msg"=>"Ocurrió el siguiente error: " . $exception->getMessage()
+                    );
                 } finally {
                     $connection->disconnect();
                 }
             } else {
-                $response = array("status"=>false, "error"=>"No está conectado al servidor de bases de datos");
+                $response = array(
+                    "status"=>false, 
+                    "msg"=>"No está conectado al servidor de bases de datos"
+                );
             }
         } else {
-            $response = array("status"=>false, "error"=>"No está enviando ningún parámetro a la función");
+            $response = array(
+                "status"=>false, 
+                "msg"=>"No está enviando ningún parámetro a la función"
+            );
         } 
         return $response;
     }
@@ -110,7 +132,7 @@ class documento{
         $connect = $connection->connect(); 
         if (!empty($params)) {
             if ($connect!=null) {
-                $response["status"] = "success";
+                $response["status"] = true;
                 try {
                     $connect->beginTransaction();
                     $sql = "DELETE FROM documento WHERE idDocumento=:idDocumento";
@@ -120,20 +142,32 @@ class documento{
                         $response["total"] = $query->rowCount();
                         $this->audit(4, $params);
                     } else {
-                        $response = array("status"=>"error", "error"=>"No se pudo ejecutar la consulta a la base de datos");
+                        $response = array(
+                            "status"=>false, 
+                            "msg"=>"No se pudo ejecutar la consulta a la base de datos"
+                        );
                     }
                     $connect->commit();
                 } catch(PDOException $exception) {
                     $connect->rollback();
-                    $response = array("status"=>false, "error"=>"Ocurrió el siguiente error: " . $exception->getMessage());
+                    $response = array(
+                        "status"=>false, 
+                        "msg"=>"Ocurrió el siguiente error: " . $exception->getMessage()
+                    );
                 } finally {
                     $connection->disconnect();
                 }
             } else {
-                $response = array("status"=>false, "error"=>"No está conectado al servidor de bases de datos");
+                $response = array(
+                    "status"=>false, 
+                    "msg"=>"No está conectado al servidor de bases de datos"
+                );
             }
         } else {
-            $response = array("status"=>false, "error"=>"No está enviando ningún parámetro a la función");
+            $response = array(
+                "status"=>false, 
+                "msg"=>"No está enviando ningún parámetro a la función"
+            );
         } 
         return $response;
     }
@@ -143,7 +177,7 @@ class documento{
         $connection = new connection();
         $connect = $connection->connect(); 
         if ($connect!=null) {
-            $response["status"] = "success";
+            $response["status"] = true;
             try {
                 switch ($type) {
                     case '1':
@@ -176,12 +210,18 @@ class documento{
                     $response["total"] = $query->rowCount();
                 }
             } catch(PDOException $exception) {
-                $response = array("status"=>false, "error"=>"Ocurrió el siguiente error: " . $exception->getMessage());
+                $response = array(
+                    "status"=>false, 
+                    "msg"=>"Ocurrió el siguiente error: " . $exception->getMessage()
+                );
             } finally {
                 $connection->disconnect();
             }
         } else {
-            $response = array("status"=>false, "error"=>"No está conectado al servidor de bases de datos");
+            $response = array(
+                "status"=>false, 
+                "msg"=>"No está conectado al servidor de bases de datos"
+            );
         } 
         return $response;
     }

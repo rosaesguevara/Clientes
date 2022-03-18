@@ -10,72 +10,68 @@ $(document).ready(function() {
 	});
 
 	$("#guardarCliente").click(function(){
-		if ($("#frmCliente input[name=nombres]").val()!="" && $("#frmCliente input[name=apellidos]").val()!="") {
-			$.ajax({
-				url: base_uri+'cliente/save.php',
-				type: 'POST',
-				dataType: 'Json',
-				data: $('#frmCliente').serialize()
-			}).done(function(response){
-				if(response.status=="success"){
-					alert('El cliente se ingreso con exito');
-					$("#frmCliente input[name=idCliente]").val('');
-					$("#frmCliente input[name=nombres]").val('');
-					$("#frmCliente input[name=apellidos]").val('');
-					listarCliente();
-				}else{
-					alert(response.error);
-				}
-			}).fail(function(){
-				alert('Ocurrió un error al realizar la petición');
-			});
-		}
+		$.ajax({
+			url: base_uri+'cliente/save.php',
+			type: 'POST',
+			dataType: 'Json',
+			data: $('#frmCliente').serialize()
+		}).done(function(response){
+			if(response.status==true){
+				alert('El cliente se guardo con exito');
+				$("#frmCliente input[name=idCliente]").val('');
+				$("#frmCliente input[name=nombres]").val('');
+				$("#frmCliente input[name=apellidos]").val('');
+				listarCliente();
+			}else{
+				alert(response.msg);
+			}
+		}).fail(function(){
+			alert('Ocurrió un error al realizar la petición');
+		});
 	});
 
 	$("#guardarDocumento").click(function(){
-		if($("#frmDocumento input[name=numeroDocumento]").val()!="" && $("#frmDocumento select[name=idTipoDocumento]").val()!=""){
-			$.ajax({
-				url: base_uri+'documento/save.php',
-				type: 'POST',
-				dataType: 'Json',
-				data: $('#frmDocumento').serialize()
-			}).done(function(response){
-				if(response.status=="success"){
-					alert('El documento se ingreso con exito');
-					$("#frmDocumento input[name=idDocumento]").val('');
-					$("#frmDocumento input[name=numeroDocumento]").val('');
-					listarTipoDocumento();
-					listarDocumento($("#frmDocumento input[name=idCliente]").val());
-				}else{
-					alert(response.error);
-				}
-			}).fail(function(){
-				alert('Ocurrió un error al realizar la petición');
-			});
-		}
+		var idCliente = $("#frmDocumento input[name=idCliente]").val();
+		$.ajax({
+			url: base_uri+'documento/save.php',
+			type: 'POST',
+			dataType: 'Json',
+			data: $('#frmDocumento').serialize()
+		}).done(function(response){
+			if(response.status==true){
+				alert('El documento se guardo con exito');
+				$("#frmDocumento input[name=idDocumento]").val('');
+				$("#frmDocumento input[name=numeroDocumento]").val('');
+				listarTipoDocumento();
+				listarDocumento(idCliente);
+			}else{
+				alert(response.msg);
+			}
+		}).fail(function(){
+			alert('Ocurrió un error al realizar la petición');
+		});
 	});
 
 	$("#guardarDireccion").click(function(){
-		if($("#frmDireccion input[name=direccion]").val()!="" && $("#frmDireccion select[name=idMunicipio]").val()!=""){
-			$.ajax({
-				url: base_uri+'direccion/save.php',
-				type: 'POST',
-				dataType: 'Json',
-				data: $('#frmDireccion').serialize()
-			}).done(function(response){
-				if(response.status=="success"){
-					alert('El cliente se ingreso con exito');
-					$("#frmDireccion input[name=idDireccion]").val('');
-					$("#frmDireccion input[name=direccion]").val('');
-					listarMunicipio();
-					listarDireccion($("#frmDireccion input[name=idCliente]").val());
-				}else{
-					alert(response.error);
-				}
-			}).fail(function(){
-				alert('Ocurrió un error al realizar la petición');
-			});
-		}
+		var idCliente = $("#frmDireccion input[name=idCliente]").val();
+		$.ajax({
+			url: base_uri+'direccion/save.php',
+			type: 'POST',
+			dataType: 'Json',
+			data: $('#frmDireccion').serialize()
+		}).done(function(response){
+			if(response.status==true){
+				alert('La direccion se guardo con exito');
+				$("#frmDireccion input[name=idDireccion]").val('');
+				$("#frmDireccion input[name=direccion]").val('');
+				listarMunicipio();
+				listarDireccion(idCliente);
+			}else{
+				alert(response.msg);
+			}
+		}).fail(function(){
+			alert('Ocurrió un error al realizar la petición');
+		});
 	});
 });
 
@@ -86,19 +82,21 @@ function listarMunicipio(idMunicipio){
 	    dataType: 'Json'
 	}).done(function(response){
 	    $('#idMunicipio').empty();
-	    if(response.status=="success"){
+	    if(response.status==true){
 	    	$('#idMunicipio').append('<option value="">Seleccione una opción</option>');
 	        $.each(response.object, function(index, value){
 				if (idMunicipio != undefined && idMunicipio != null) {
 	        		if (idMunicipio == value.idMunicipio) {
 	        			$('#idMunicipio').append('<option value="' + value.idMunicipio + '" selected="true">' + value.municipio + '</option>');
+	        		} else {
+	        			$('#idMunicipio').append('<option value="' + value.idMunicipio + '">' + value.municipio + '</option>');
 	        		}
 	        	} else {
 					$('#idMunicipio').append('<option value="' + value.idMunicipio + '">' + value.municipio + '</option>');
 	        	}
 			});
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -112,19 +110,21 @@ function listarTipoDocumento(idTipoDocumento){
 	    dataType: 'Json'
 	}).done(function(response){
 	    $('#idTipoDocumento').empty();
-	    if(response.status=="success"){
+	    if(response.status==true){
 	    	$('#idTipoDocumento').append('<option value="">Seleccione una opción</option>');
 	        $.each(response.object, function(index, value){
 	        	if (idTipoDocumento != undefined && idTipoDocumento != null) {
 	        		if (idTipoDocumento == value.idTipoDocumento) {
 	        			$('#idTipoDocumento').append('<option value="' + value.idTipoDocumento + '" selected="true">' + value.tipoDocumento + '</option>');
+	        		} else {
+	        			$('#idTipoDocumento').append('<option value="' + value.idTipoDocumento + '">' + value.tipoDocumento + '</option>');
 	        		}
 	        	} else {
 					$('#idTipoDocumento').append('<option value="' + value.idTipoDocumento + '">' + value.tipoDocumento + '</option>');
 	        	}
 			});
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -138,7 +138,7 @@ function listarCliente(){
 	    dataType: 'Json'
 	}).done(function(response){
 	    $('#tbodyCliente').empty();
-	    if(response.status=="success"){
+	    if(response.status==true){
 		    var cont = 1;
 		    var accion = '';
 	        $.each(response.object, function(index, value){
@@ -150,7 +150,7 @@ function listarCliente(){
 				cont++;
 			});
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -167,7 +167,7 @@ function listarDocumento(idCliente){
 	    }
 	}).done(function(response){
 	    $('#tbodyDocumento').empty();
-	    if(response.status=="success"){
+	    if(response.status==true){
 		    var cont = 1;
 		    var accion = '';
 	        $.each(response.object, function(index, value){
@@ -178,7 +178,7 @@ function listarDocumento(idCliente){
 				cont++;
 			});
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -195,7 +195,7 @@ function listarDireccion(idCliente){
 	    }
 	}).done(function(response){
 	    $('#tbodyDireccion').empty();
-	    if(response.status=="success"){
+	    if(response.status==true){
 		    var cont = 1;
 		    var accion = '';
 	        $.each(response.object, function(index, value){
@@ -206,7 +206,7 @@ function listarDireccion(idCliente){
 				cont++;
 			});
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -223,11 +223,11 @@ function eliminarCliente(idCliente){
 		    	idCliente: idCliente
 		    }
 		}).done(function(response){
-		    if(response.status=="success"){
+		    if(response.status==true){
 		    	alert('El cliente fue eliminado');
 			    listarCliente();
 		    }else{
-		        alert(response.error);
+		        alert(response.msg);
 		    }
 		}).fail(function(){
 		    alert('Ocurrió un error al realizar la petición');
@@ -245,11 +245,11 @@ function eliminarDocumento(idCliente, idDocumento){
 		    	idDocumento: idDocumento
 		    }
 		}).done(function(response){
-		    if(response.status=="success"){
+		    if(response.status==true){
 		    	alert('El documento fue eliminado');
 			    listarDocumento(idCliente);
 		    }else{
-		        alert(response.error);
+		        alert(response.msg);
 		    }
 		}).fail(function(){
 		    alert('Ocurrió un error al realizar la petición');
@@ -267,11 +267,11 @@ function eliminarDireccion(idCliente, idDireccion){
 		    	idDireccion: idDireccion
 		    }
 		}).done(function(response){
-		    if(response.status=="success"){
+		    if(response.status==true){
 		    	alert('La direccion fue eliminada');
 			    listarDireccion(idCliente);
 		    }else{
-		        alert(response.error);
+		        alert(response.msg);
 		    }
 		}).fail(function(){
 		    alert('Ocurrió un error al realizar la petición');
@@ -288,7 +288,7 @@ function obtenerCliente(idCliente){
 	    	idCliente: idCliente
 	    }
 	}).done(function(response){
-	    if(response.status=="success"){
+	    if(response.status==true){
 	    	if (response.total>0) {
 	    		var data = response.object[0];
 	    		$("#frmCliente input[name=idCliente]").val(data.idCliente);
@@ -296,7 +296,7 @@ function obtenerCliente(idCliente){
 	    		$("#frmCliente input[name=apellidos]").val(data.apellidos);
 	    	}
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -312,7 +312,7 @@ function obtenerDocumento(idDocumento){
 	    	idDocumento: idDocumento
 	    }
 	}).done(function(response){
-	    if(response.status=="success"){
+	    if(response.status==true){
 	    	if (response.total>0) {
 	    		var data = response.object[0];
 	    		$("#frmDocumento input[name=idDocumento]").val(data.idDocumento);
@@ -321,7 +321,7 @@ function obtenerDocumento(idDocumento){
 	    		listarTipoDocumento(data.idTipoDocumento);
 	    	}
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');
@@ -337,7 +337,7 @@ function obtenerDireccion(idDireccion){
 	    	idDireccion: idDireccion
 	    }
 	}).done(function(response){
-	    if(response.status=="success"){
+	    if(response.status==true){
 	    	if (response.total>0) {
 	    		var data = response.object[0];
 	    		$("#frmDireccion input[name=idDireccion]").val(data.idDireccion);
@@ -346,7 +346,7 @@ function obtenerDireccion(idDireccion){
 	    		listarMunicipio(data.idMunicipio);
 	    	}
 	    }else{
-	        alert(response.error);
+	        alert(response.msg);
 	    }
 	}).fail(function(){
 	    alert('Ocurrió un error al realizar la petición');

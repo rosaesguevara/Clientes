@@ -15,12 +15,15 @@
 	
 	$response = $tipoDocumento->list();
 
-	if ($response["status"] == "success") {
+	if ($response["status"] == true) {
 		if ($response["total"] == 0) {
 			$response["object"] = array();
 		}
 	} else { 
-		$response = array("status"=>"error", "error" => "Tipo documento no disponible");
+		$response = array(
+			"status"=>false, 
+			"msg" => "Tipo documento no disponible"
+		);
 	}
 	
 	echo json_encode($response);

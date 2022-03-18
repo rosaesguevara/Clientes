@@ -10,27 +10,31 @@
 
     $cliente = new cliente();
 
-    # $params = json_decode(file_get_contents("php://input"), true); 
     $params = $_POST; 
     $response = array();
 
-    $params_incomplete = array();
-    $param_list = array("nombres", "apellidos");
-    foreach ($param_list as $param) {
-        if (!(isset($params[$param]))) {
-            array_push($params_incomplete, $param);
-        }
-    }
-
-    if (empty($params_incomplete)) {
-        $response = $cliente->save($params);
-        if ($response["status"]=="success") {
-            if ($response["insertId"]==0) {
-                $response = array("status"=>"error", "error" => "El cliente no pudo ser ingresado");
+    if (isset($params['nombres']) && isset($params['apellidos'])) {
+        if ($params['nombres']!='' && $params['apellidos']!='') {
+            $response = $cliente->save($params);
+            if ($response["status"]==true) {
+                if ($response["insertId"]==0) {
+                    $response = array(
+                        "status"=>false, 
+                        "msg" => "El cliente no pudo ser ingresado"
+                    );
+                }
             }
+        } else {
+            $response = array(
+                "status"=>false, 
+                "msg" => "LLene los campos correctamente"
+            );
         }
     } else {
-        $response = array("status"=>"error", "error" => "No se pudo ingresar el cliente. Los datos están incompletos");
+        $response = array(
+            "status"=>false, 
+            "msg" => "No se pudo ingresar el cliente. Los datos están incompletos"
+        );
     }
 
     echo json_encode($response);

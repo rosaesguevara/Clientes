@@ -20,12 +20,15 @@
 	}
 
 	if (!empty($response)) {
-		if ($response["status"] == "success") {
+		if ($response["status"] == true) {
 			if ($response["total"] == 0) {
 				$response["object"] = array();
 			}
 		} else { 
-			$response = array("status"=>"error", "error" => "Documento no disponible");
+			$response = array(
+				"status"=>false, 
+				"msg" => "Documento no disponible"
+			);
 		}
 	}
 	

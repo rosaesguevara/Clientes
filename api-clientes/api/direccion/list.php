@@ -20,12 +20,15 @@
 	}
 
 	if (!empty($response)) {
-		if ($response["status"] == "success") {
+		if ($response["status"] == true) {
 			if ($response["total"] == 0) {
 				$response["object"] = array();
 			}
 		} else { 
-			$response = array("status"=>"error", "error" => "Direccion no disponible");
+			$response = array(
+				"status"=>false, 
+				"msg" => "Direccion no disponible"
+			);
 		}
 	}
 	

@@ -14,12 +14,15 @@
 	$response = array();
 	
 	$response = $municipio->list();
-	if ($response["status"] == "success") {
+	if ($response["status"] == true) {
 		if ($response["total"] == 0) {
 			$response["object"] = array();
 		}
 	} else { 
-		$response = array("status"=>"error", "error" => "Municipio no disponible");
+		$response = array(
+			"status"=>false, 
+			"msg" => "Municipio no disponible"
+		);
 	}
 
 	

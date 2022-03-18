@@ -13,23 +13,28 @@
     $params = $_POST; 
     $response = array();
 
-    $not_exist = array();
-    $param_list = array("idDireccion");
-    foreach ($param_list as $param) {
-        if (!(isset($params[$param]))) {
-            array_push($not_exist, $param);
-        }
-    }
-
-    if (empty($not_exist)) {
-        $response = $direccion->delete($params);
-        if ($response["status"]=="success") {
-            if ($response["total"]==0) {
-                $response = array("status"=>"error", "error" => "La direccion no pudo ser eliminada");
+    if (isset($params['idDireccion'])) {
+        if ($params['idDireccion']!='') {
+            $response = $direccion->delete($params);
+            if ($response["status"]==true) {
+                if ($response["total"]==0) {
+                    $response = array(
+                        "status"=>false, 
+                        "msg" => "La direccion no pudo ser eliminada"
+                    );
+                }
             }
+        } else {
+            $response = array(
+                "status"=>false, 
+                "msg" => "El idDireccion esta vacio"
+            );
         }
     } else {
-        $response = array("status"=>"error", "error" => "No se pudo eliminar el direccion. Los datos están incompletos");
+        $response = array(
+            "status"=>false, 
+            "msg" => "No se pudo eliminar el direccion. Los datos están incompletos"
+        );
     }
 
     echo json_encode($response);

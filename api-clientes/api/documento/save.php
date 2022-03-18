@@ -10,27 +10,31 @@
 
     $documento = new documento();
 
-    # $params = json_decode(file_get_contents("php://input"), true); 
     $params = $_POST; 
     $response = array();
 
-    $params_incomplete = array();
-    $param_list = array("numeroDocumento", "idCliente", "idTipoDocumento");
-    foreach ($param_list as $param) {
-        if (!(isset($params[$param]))) {
-            array_push($params_incomplete, $param);
-        }
-    }
-
-    if (empty($params_incomplete)) {
-        $response = $documento->save($params);
-        if ($response["status"]=="success") {
-            if ($response["insertId"]==0) {
-                $response = array("status"=>"error", "error" => "El documento no pudo ser ingresado");
+    if (isset($params['numeroDocumento']) && isset($params['idCliente']) && isset($params['idTipoDocumento'])) {
+        if ($params['numeroDocumento']!='' && $params['idCliente']!='' && $params['idTipoDocumento']!='') {
+            $response = $documento->save($params);
+            if ($response["status"]==true) {
+                if ($response["insertId"]==0) {
+                    $response = array(
+                        "status"=>false, 
+                        "msg" => "El documento no pudo ser ingresado"
+                    );
+                }
             }
+        } else {
+            $response = array(
+                "status"=>false, 
+                "msg" => "Llene los campos correctamente"
+            );
         }
     } else {
-        $response = array("status"=>"error", "error" => "No se pudo ingresar el direccion. Los datos están incompletos");
+        $response = array(
+            "status"=>false, 
+            "msg" => "No se pudo ingresar el direccion. Los datos están incompletos"
+        );
     }
 
     echo json_encode($response);

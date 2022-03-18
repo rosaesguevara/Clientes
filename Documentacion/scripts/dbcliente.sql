@@ -94,7 +94,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbcliente`.`direccion` (
   `idDireccion` INT NOT NULL AUTO_INCREMENT,
-  `direccion` VARCHAR(45) NOT NULL,
+  `direccion` VARCHAR(100) NOT NULL,
   `idMunicipio` INT NOT NULL,
   `idCliente` INT NOT NULL,
   PRIMARY KEY (`idDireccion`),
@@ -118,7 +118,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dbcliente`.`auditoria` (
   `idAuditoria` INT NOT NULL AUTO_INCREMENT,
-  `accion` VARCHAR(45) NOT NULL,
+  `accion` VARCHAR(500) NOT NULL,
   `fecha` DATETIME NOT NULL,
   PRIMARY KEY (`idAuditoria`))
 ENGINE = InnoDB;

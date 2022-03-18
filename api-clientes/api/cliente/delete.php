@@ -13,23 +13,28 @@
     $params = $_POST; 
     $response = array();
 
-    $not_exist = array();
-    $param_list = array("idCliente");
-    foreach ($param_list as $param) {
-        if (!(isset($params[$param]))) {
-            array_push($not_exist, $param);
-        }
-    }
-
-    if (empty($not_exist)) {
-        $response = $cliente->delete($params);
-        if ($response["status"]=="success") {
-            if ($response["total"]==0) {
-                $response = array("status"=>"error", "error" => "El cliente no pudo ser eliminado");
+    if (isset($params['idCliente'])) {
+        if ($params['idCliente']!='') {
+            $response = $cliente->delete($params);
+            if ($response["status"]==true) {
+                if ($response["total"]==0) {
+                    $response = array(
+                        "status"=>false, 
+                        "msg" => "El cliente no pudo ser eliminado"
+                    );
+                }
             }
+        } else {
+            $response = array(
+                "status"=>false, 
+                "msg" => "El idCliente esta vacio"
+            );
         }
     } else {
-        $response = array("status"=>"error", "error" => "No se pudo eliminar el cliente. Los datos están incompletos");
+        $response = array(
+            "status"=>false, 
+            "msg" => "No se pudo eliminar el cliente. Los datos están incompletos"
+        );
     }
 
     echo json_encode($response);

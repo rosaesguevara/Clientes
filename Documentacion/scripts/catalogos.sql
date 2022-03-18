@@ -1,4 +1,4 @@
-USE bdcliente;
+USE dbcliente;
 
 INSERT INTO tipodocumento (idTipoDocumento, tipoDocumento) VALUES 
 (1, 'DUI'), (2, 'PASAPORTE');
